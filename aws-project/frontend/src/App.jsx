@@ -6,8 +6,7 @@ import * as Y from "yjs";
 import { SocketIOProvider } from "y-socket.io";
 
 const App = () => {
- const [inputValue, setInputValue] = useState("");
-  const [username, setUsername] = useState("");
+  const [username, setUsername] = useState(""); // Case corrected to uppercase 'U'
 
   const editorRef = useRef(null);
   const providerRef = useRef(null);
@@ -42,32 +41,38 @@ const App = () => {
     bindingRef.current = binding;
   };
 
+  // Image ke mutabik Form submit handler function
+  const handleJoin = (e) => {
+    e.preventDefault();
+    const enteredUsername = e.target.username.value;
+    if (enteredUsername.trim()) {
+      setUsername(enteredUsername.trim());
+    }
+  };
+
+  // 1. Image wala logic: Agar username nahi hai to Login Form dikhao
   if (!username) {
     return (
       <main className="h-screen w-full bg-gray-950 flex gap-4 p-4 items-center justify-center">
-        <div className="flex flex-col gap-4">
+        <form onSubmit={handleJoin} className="flex flex-col gap-4">
           <input
             type="text"
             placeholder="Enter your username"
             className="p-2 rounded-lg bg-gray-800 text-white outline-none"
-            value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
+            name="username" // Yeh name property bohot zaroori hai e.target.username ke liye
           />
           <button
-            className="p-2 rounded-lg bg-amber-50 text-gray-950 font-bold dynamic-btn"
-            onClick={() => {
-              if (inputValue.trim()) {
-                setUsername(inputValue.trim()); 
-              }
-            }}
+            type="submit"
+            className="p-2 rounded-lg bg-amber-50 text-gray-950 font-bold"
           >
             Join
           </button>
-        </div>
+        </form>
       </main>
     );
   }
 
+  // 2. Dashboard / Editor Screen (Username milne ke baad)
   return (
     <main className="h-screen w-full bg-gray-950 flex gap-4 p-4">
       <aside className="h-full w-1/4 bg-amber-50 rounded-lg p-4">
